@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suchi's Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;700&family=Hanken+Grotesk:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
+<style>
+  :root{
+    /* Light theme — Angelic White palette */
+    --background:#FFF3FA;
+    --surface:#FFF3FA;
+    --surface-container-lowest:#FFFFFF;
+    --surface-container-low:#FFEAF4;
+    --surface-container:#FFE1ED;      /* Cotton Candy Pink - accent */
+    --surface-container-high:#FCD7D7; /* Soft Blush Pink - secondary */
+    --surface-container-highest:#F6C9D6;
+    --outline-variant:#F0C3D2;
+    --outline:#C78CA0;                /* Muted Rose */
+
+    --primary:#C78CA0;                /* Muted Rose - main accent */
+    --on-primary:#FFFFFF;
+    --primary-container:#ECBAD0;      /* Ribbon Pink - highlight */
+    --on-primary-container:#5A3345;
+
+    --secondary:#B97690;
+    --secondary-container:#FCD7D7;
+    --on-secondary-container:#7A4A57;
+
+    --on-background:#4A2C39;          /* deep rose-brown, readable on pink */
+    --on-surface:#4A2C39;
+    --on-surface-variant:#8C5D6E;
+
+    --error:#ba1a1a; --on-error:#ffffff; --error-container:#ffdad6; --on-error-container:#93000a;
+
+    --wood-1:#c98ba0; --wood-2:#a86a7d; --gold:#b8863f;
+  }
+  html.dark{
+    /* Dark theme — Hunter Green / Aged Parchment palette */
+    --background:#1C2A22;
+    --surface:#1C2A22;
+    --surface-container-lowest:#162019;
+    --surface-container-low:#22301F;
+    --surface-container:#3D1E1E;      /* Dark Burgundy - accent */
+    --surface-container-high:#2B1B17; /* Espresso Brown - secondary */
+    --surface-container-highest:#3a281f;
+    --outline-variant:#4a3a2f;
+    --outline:#EADEC9;
+
+    --primary:#EADEC9;                /* Aged Parchment - highlight */
+    --on-primary:#3D1E1E;
+    --primary-container:#5C5247;      /* Weathered Tweed */
+    --on-primary-container:#F3ECDF;
+
+    --secondary:#EADEC9;
+    --secondary-container:#3D1E1E;
+    --on-secondary-container:#EADEC9;
+
+    --on-background:#F3ECDF;          /* light parchment text, readable on hunter green */
+    --on-surface:#F3ECDF;
+    --on-surface-variant:#C9BFA9;     /* muted but legible */
+
+    --error:#ffb4ab; --on-error:#690005; --error-container:#93000a; --on-error-container:#ffdad6;
+
+    --wood-1:#4a3226; --wood-2:#33231b; --gold:#c9a13b;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--background);color:var(--on-background);
+    font-family:'Hanken Grotesk',sans-serif; transition:background .4s ease,color .4s ease;
+    min-height:100vh; overflow-x:hidden;}
+  .display{font-family:'Libre Caslon Text',serif;}
+  .material-symbols-outlined{font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;
+    font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;
+    white-space:nowrap;word-wrap:normal;direction:ltr;vertical-align:middle;
+    font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;}
+  .fill{font-variation-settings:'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 24;}
+
+  header{position:fixed;top:0;left:0;right:0;z-index:50;background:color-mix(in srgb, var(--surface) 85%, transparent);
+    backdrop-filter:blur(20px);border-bottom:1px solid var(--outline-variant);}
+  .header-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;
+    height:64px;padding:0 16px;}
+  .brand-wrap{display:flex;align-items:center;gap:10px;}
+  .logo{width:34px;height:34px;flex-shrink:0;}
+  .brand{font-size:22px;color:var(--on-secondary-container);}
+  html.dark .brand{color:var(--on-background);}
+  .icon-btn{border:none;background:transparent;color:var(--primary);border-radius:999px;padding:8px;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;}
+  html.dark .icon-btn{color:var(--on-background);}
+  .icon-btn:hover{background:var(--surface-container-high);}
+  .icon-btn:active{transform:scale(.92);}
+
+  .theme-switch{width:52px;height:30px;border-radius:999px;border:1.5px solid var(--outline-variant);
+    background:var(--surface-container-high);position:relative;cursor:pointer;padding:0;flex-shrink:0;
+    transition:background .3s ease,border-color .3s ease;}
+  .theme-switch-knob{position:absolute;top:2px;left:2px;width:23px;height:23px;border-radius:50%;
+    background:var(--primary);display:flex;align-items:center;justify-content:center;
+    transition:transform .3s cubic-bezier(.4,0,.2,1),background .3s ease;
+    box-shadow:0 1px 3px rgba(0,0,0,.25);}
+  .theme-switch-knob .material-symbols-outlined{font-size:15px;color:var(--on-primary);}
+  html.dark .theme-switch-knob{transform:translateX(21px);}
+  .add-btn{display:flex;align-items:center;gap:6px;background:#b86273;color:#ffffff;
+    border:none;padding:10px 18px;border-radius:14px;font-weight:700;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.15);
+    transition:.15s;font-size:15px;}
+  html.dark .add-btn{background:#2B1B17;color:#F3ECDF;}
+  .add-btn:hover{opacity:.92;} .add-btn:active{transform:scale(.96);}
+
+  .layout{display:flex;padding-top:64px;min-height:100vh;}
+  aside{width:230px;background:var(--surface-container-low);border-right:1px solid var(--outline-variant);
+    padding:24px 12px;position:sticky;top:64px;height:calc(100vh - 64px);}
+  html.dark aside{background:#3D1E1E;border-right:1px solid rgba(234,222,201,.15);}
+  aside h2{font-family:'Libre Caslon Text',serif;color:var(--primary);margin:0 0 2px;font-size:22px;font-weight:400;}
+  html.dark aside h2{color:#F3ECDF;}
+  aside p{margin:0;font-size:12px;letter-spacing:.05em;color:var(--on-surface-variant);opacity:.85;text-transform:uppercase;}
+  html.dark aside p{color:#EADEC9;}
+  .nav-link{display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;color:var(--on-surface-variant);
+    text-decoration:none;font-weight:600;margin-top:6px;transition:.2s;font-size:14px;}
+  .nav-link.active{background:var(--secondary-container);color:var(--on-secondary-container);}
+  html.dark .nav-link{color:#EADEC9;}
+  html.dark .nav-link.active{background:#EADEC9;color:#3D1E1E;}
+  html.dark .nav-link:hover{background:rgba(234,222,201,.15);}
+  .nav-link:hover{background:var(--surface-container-highest);}
+
+  main{flex:1;padding:32px 24px 80px;max-width:1280px;}
+  .page-title{font-family:'Libre Caslon Text',serif;font-size:38px;font-weight:400;margin:0 0 4px;color:var(--on-background);}
+  .page-sub{color:var(--on-surface-variant);margin:0 0 32px;}
+
+  .row{position:relative;padding:20px 12px 40px;}
+  .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:28px 20px;position:relative;z-index:1;}
+  @media (max-width:900px){ .grid{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:560px){ .grid{grid-template-columns:repeat(2,1fr);} }
+  .shelf-board{position:absolute;left:0;right:0;bottom:14px;height:16px;
+    background:linear-gradient(180deg,var(--wood-1),var(--wood-2));border-radius:3px;
+    box-shadow:0 6px 10px rgba(0,0,0,.25), inset 0 2px 2px rgba(255,255,255,.15);}
+
+  .book{cursor:pointer;display:flex;flex-direction:column;align-items:center;position:relative;
+    transition:transform .2s;}
+  .book:hover{transform:translateY(-6px);}
+  .cover{width:100%;aspect-ratio:2/3;border-radius:6px;overflow:hidden;
+    box-shadow:2px 4px 10px rgba(0,0,0,.3), -1px 0 0 rgba(0,0,0,.08) inset;
+    background:var(--surface-container-high);position:relative;}
+  .cover img{width:100%;height:100%;object-fit:cover;display:block;}
+  .cover .stars{position:absolute;bottom:4px;left:4px;right:4px;background:rgba(0,0,0,.45);
+    border-radius:6px;padding:2px 4px;display:flex;gap:1px;justify-content:center;}
+  .cover .stars .material-symbols-outlined{font-size:11px;color:var(--gold);}
+  .book-title{margin-top:8px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;font-weight:600;
+    text-align:center;color:var(--on-background);line-height:1.3;}
+  .book-author{font-size:11px;color:var(--on-surface-variant);text-align:center;margin-top:1px;}
+
+  .add-tile{border:2px dashed var(--outline);border-radius:16px;aspect-ratio:2/3;
+    display:flex;align-items:center;justify-content:center;color:var(--outline);cursor:pointer;
+    transition:.2s;background:transparent;}
+  .add-tile:hover{border-color:var(--primary);color:var(--primary);background:var(--surface-container-low);}
+
+  .empty-state{text-align:center;padding:70px 20px;color:var(--on-surface-variant);}
+  .empty-state .material-symbols-outlined{font-size:52px;color:var(--outline);margin-bottom:10px;}
+  .empty-state h3{font-family:'Libre Caslon Text',serif;font-weight:400;font-size:24px;color:var(--on-background);margin:0 0 6px;}
+  .empty-state button{margin-top:18px;background:var(--primary);color:var(--on-primary);border:none;
+    padding:12px 24px;border-radius:16px;font-weight:700;cursor:pointer;}
+  .empty-state button:hover{opacity:.92;}
+
+  /* overlay + modal */
+  .overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;transition:opacity .25s;padding:20px;}
+  .overlay.open{opacity:1;pointer-events:auto;}
+  .overlay-bg{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);}
+  .modal{position:relative;background:var(--surface-container);width:320px;max-width:90vw;
+    border-radius:32px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);transform:scale(.9);
+    transition:transform .25s;max-height:86vh;overflow-y:auto;}
+  .overlay.open .modal{transform:scale(1);}
+  .modal-head{padding:24px;display:flex;flex-direction:column;align-items:center;text-align:center;
+    border-bottom:1px solid var(--outline-variant);background:var(--surface-container-low);}
+  .modal-cover{width:96px;aspect-ratio:2/3;border-radius:10px;overflow:hidden;margin-bottom:14px;
+    box-shadow:2px 5px 14px rgba(0,0,0,.3);}
+  .modal-cover img{width:100%;height:100%;object-fit:cover;}
+  .modal-head h2{font-family:'Libre Caslon Text',serif;font-weight:400;font-size:22px;margin:0;color:var(--on-surface);}
+  .modal-head p{margin:2px 0 0;color:var(--on-surface-variant);}
+  .menu-actions{padding:10px;}
+  .menu-btn{width:100%;display:flex;align-items:center;gap:12px;padding:14px 16px;border:none;
+    background:none;border-radius:20px;cursor:pointer;font-weight:700;color:var(--primary);font-size:15px;
+    transition:.15s;text-align:left;}
+  html.dark .menu-btn{color:var(--on-background);}
+  .menu-btn:hover{background:var(--surface-container-highest);}
+  .menu-btn.danger{color:var(--on-surface-variant);}
+  .menu-btn.danger:hover{background:color-mix(in srgb, var(--error-container) 45%, transparent);color:var(--error);}
+  .cancel-wrap{padding:10px;padding-top:0;}
+  .cancel-btn{width:100%;padding:14px;border:none;border-radius:20px;background:var(--surface-container-high);
+    font-weight:700;color:var(--on-surface-variant);cursor:pointer;transition:.15s;}
+  .cancel-btn:hover{background:var(--surface-container-highest);}
+
+  /* form modal — squircle */
+  .form-modal{width:440px;max-width:92vw;border-radius:36px;}
+  .form-body{padding:26px 26px 6px;}
+  .form-body h2{font-family:'Libre Caslon Text',serif;font-weight:400;font-size:24px;margin:0 0 6px;color:var(--on-surface);}
+  .form-hint{font-size:13px;color:var(--on-surface-variant);margin:0 0 18px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--on-surface-variant);margin-bottom:6px;}
+  .field input[type=text], .field textarea, .field select{
+    width:100%;padding:12px 14px;border-radius:18px;border:1.5px solid var(--outline-variant);
+    background:var(--surface-container-lowest);color:var(--on-surface);font-family:inherit;font-size:14px;}
+  .field textarea{resize:vertical;min-height:72px;border-radius:20px;}
+  .field input:focus, .field textarea:focus, .field select:focus{outline:2px solid var(--primary);outline-offset:1px;}
+  .cover-upload{display:flex;gap:14px;align-items:center;}
+  .cover-preview{width:74px;aspect-ratio:2/3;border-radius:16px;overflow:hidden;background:var(--surface-container-high);
+    display:flex;align-items:center;justify-content:center;color:var(--outline);flex-shrink:0;}
+  .cover-preview img{width:100%;height:100%;object-fit:cover;}
+  .upload-btn{border:1.5px solid var(--outline-variant);padding:10px 16px;border-radius:18px;background:var(--surface-container-lowest);
+    color:var(--primary);font-weight:700;cursor:pointer;font-size:13px;}
+  html.dark .upload-btn{color:var(--on-background);}
+  .stars-input{display:flex;gap:4px;}
+  .star-choice{cursor:pointer;color:var(--outline-variant);font-size:26px;}
+  .star-choice.on{color:var(--gold);}
+  .form-actions{display:flex;gap:10px;padding:18px 26px 26px;}
+  .btn-secondary{flex:1;padding:13px;border-radius:18px;border:1.5px solid var(--outline-variant);background:transparent;
+    color:var(--on-surface-variant);font-weight:700;cursor:pointer;}
+  .btn-primary{flex:1;padding:13px;border-radius:18px;border:none;background:var(--primary);color:var(--on-primary);
+    font-weight:700;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.15);}
+  .btn-primary:hover{opacity:.92;}
+
+  /* detail view */
+  .detail-wrap{max-width:900px;margin:0 auto;}
+  .back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--primary);background:none;border:none;
+    cursor:pointer;font-weight:700;margin-bottom:18px;font-size:14px;}
+  html.dark .back-btn{color:var(--on-background);}
+  .detail-grid{display:flex;gap:36px;flex-wrap:wrap;}
+  .detail-cover{width:260px;flex-shrink:0;aspect-ratio:2/3;border-radius:16px;overflow:hidden;
+    box-shadow:8px 14px 30px rgba(0,0,0,.35);}
+  .detail-cover img{width:100%;height:100%;object-fit:cover;}
+  .detail-info{flex:1;min-width:260px;}
+  .detail-info h1{font-family:'Libre Caslon Text',serif;font-size:34px;font-weight:400;margin:0 0 4px;color:var(--on-background);}
+  .detail-info .author{color:var(--on-surface-variant);font-size:17px;margin-bottom:10px;}
+  .genre-pill{display:inline-block;background:var(--primary-container);color:var(--on-primary-container);
+    font-size:12px;font-weight:700;padding:6px 14px;border-radius:999px;margin-bottom:16px;}
+  .detail-stars{display:flex;gap:2px;margin-bottom:20px;}
+  .detail-stars .material-symbols-outlined{color:var(--gold);font-size:22px;}
+  .review-card{background:var(--surface-container-low);border-radius:22px;padding:20px;
+    border:1px solid var(--outline-variant);}
+  .review-card h3{margin:0 0 10px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--on-surface-variant);}
+  .review-card p{margin:0;line-height:1.6;color:var(--on-surface);white-space:pre-wrap;}
+  .review-card p.empty{color:var(--on-surface-variant);font-style:italic;}
+  .detail-actions{display:flex;gap:10px;margin-top:22px;}
+  .detail-actions button{padding:11px 18px;border-radius:16px;font-weight:700;cursor:pointer;border:none;}
+  .edit-inline{background:var(--primary);color:var(--on-primary);}
+  .delete-inline{background:transparent;border:1.5px solid var(--outline-variant)!important;color:var(--on-surface-variant);}
+
+  .hidden{display:none!important;}
+  @media (max-width:768px){ aside{display:none;} .detail-grid{flex-direction:column;} .detail-cover{width:200px;} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand-wrap">
+      <svg class="logo" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 6C24 6 14 10 8 10V34C14 34 24 38 24 38C24 38 34 34 40 34V10C34 10 24 6 24 6Z" stroke="var(--primary)" stroke-width="2.2" stroke-linejoin="round"/>
+        <path d="M24 8V37" stroke="var(--primary)" stroke-width="2.2"/>
+        <path d="M12 15C15 14 19 14.5 21 16.5" stroke="var(--primary)" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M12 21C15 20 19 20.5 21 22.5" stroke="var(--primary)" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M36 15C33 14 29 14.5 27 16.5" stroke="var(--primary)" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M36 21C33 20 29 20.5 27 22.5" stroke="var(--primary)" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="brand display">Suchi's Library</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button class="theme-switch" onclick="toggleTheme()" aria-label="Toggle theme" id="theme-btn">
+        <span class="theme-switch-knob">
+          <span class="material-symbols-outlined fill" id="theme-icon">bedtime</span>
+        </span>
+      </button>
+      <button class="add-btn" onclick="openAddForm()">
+        <span class="material-symbols-outlined">add</span><span class="hide-mobile">Add Book</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside>
+    <div style="padding:10px 12px 20px;"></div>
+    <a class="nav-link active" href="#" onclick="return false;">
+      <span class="material-symbols-outlined">auto_stories</span> Library
+    </a>
+  </aside>
+
+  <main>
+    <!-- LIBRARY VIEW -->
+    <div id="view-library">
+      <h1 class="page-title">Welcome back, Princess!</h1>
+      <div id="shelves-container"></div>
+    </div>
+
+    <!-- DETAIL VIEW -->
+    <div id="view-detail" class="hidden">
+      <div class="detail-wrap">
+        <button class="back-btn" onclick="showLibrary()"><span class="material-symbols-outlined">arrow_back</span> Back to shelf</button>
+        <div class="detail-grid">
+          <div class="detail-cover"><img id="d-cover" src="" alt=""></div>
+          <div class="detail-info">
+            <h1 id="d-title"></h1>
+            <div class="author" id="d-author"></div>
+            <span class="genre-pill" id="d-genre"></span>
+            <div class="detail-stars" id="d-stars"></div>
+            <div class="review-card">
+              <h3>Review</h3>
+              <p id="d-review"></p>
+            </div>
+            <div class="detail-actions">
+              <button class="edit-inline" onclick="editFromDetail()"><span class="material-symbols-outlined" style="font-size:18px;vertical-align:-4px;">edit</span> Edit</button>
+              <button class="delete-inline" onclick="deleteFromDetail()"><span class="material-symbols-outlined" style="font-size:18px;vertical-align:-4px;">delete</span> Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:40px"></div>
+  </main>
+</div>
+
+<!-- CONTEXTUAL MENU -->
+<div class="overlay" id="book-modal">
+  <div class="overlay-bg" onclick="closeBookMenu()"></div>
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-cover"><img id="modal-cover" src="" alt=""></div>
+      <h2 id="modal-title">Book Title</h2>
+      <p id="modal-author">Author Name</p>
+    </div>
+    <div class="menu-actions">
+      <button class="menu-btn" onclick="viewBook()"><span class="material-symbols-outlined">visibility</span> View</button>
+      <button class="menu-btn" onclick="openEditForm()"><span class="material-symbols-outlined">edit</span> Edit</button>
+      <button class="menu-btn danger" onclick="deleteBook()"><span class="material-symbols-outlined">delete</span> Delete</button>
+    </div>
+    <div class="cancel-wrap">
+      <button class="cancel-btn" onclick="closeBookMenu()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD / EDIT FORM -->
+<div class="overlay" id="form-modal">
+  <div class="overlay-bg" onclick="closeForm()"></div>
+  <div class="modal form-modal">
+    <div class="form-body">
+      <h2 id="form-heading">Add a Book</h2>
+      <p class="form-hint">Add your first book to begin your collection.</p>
+      <div class="field">
+        <label>Cover</label>
+        <div class="cover-upload">
+          <div class="cover-preview" id="form-cover-preview"><span class="material-symbols-outlined">image</span></div>
+          <label class="upload-btn" for="cover-file">Choose image
+            <input type="file" id="cover-file" accept="image/*" style="display:none" onchange="handleCoverUpload(event)">
+          </label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Title</label>
+        <input type="text" id="f-title" placeholder="e.g. The Picture of Dorian Gray">
+      </div>
+      <div class="field">
+        <label>Author</label>
+        <input type="text" id="f-author" placeholder="e.g. Oscar Wilde">
+      </div>
+      <div class="field">
+        <label>Genre</label>
+        <input type="text" id="f-genre" placeholder="e.g. Gothic Fiction">
+      </div>
+      <div class="field">
+        <label>Rating</label>
+        <div class="stars-input" id="f-stars"></div>
+      </div>
+      <div class="field">
+        <label>Review</label>
+        <textarea id="f-review" placeholder="What did you think of it?"></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-secondary" onclick="closeForm()">Cancel</button>
+      <button class="btn-primary" onclick="saveForm()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'suchis-library-books';
+
+function loadBooks(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return []; }
+}
+function saveBooks(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(books)); }
+  catch(e){ console.error('Could not save library', e); }
+}
+
+let books = loadBooks();
+let nextId = books.length ? Math.max(...books.map(b=>b.id)) + 1 : 1;
+let activeBookId = null;
+let editingId = null;
+let formRating = 0;
+
+function starsMarkup(rating, size){
+  let s = '';
+  for(let i=1;i<=5;i++){
+    s += `<span class="material-symbols-outlined${i<=rating?' fill':''}" style="font-size:${size}px;">star</span>`;
+  }
+  return s;
+}
+
+const BOOKS_PER_ROW = 5;
+
+function renderShelves(){
+  const container = document.getElementById('shelves-container');
+  container.innerHTML = '';
+
+  if(books.length === 0){
+    container.innerHTML = `<div class="empty-state">
+      <span class="material-symbols-outlined">auto_stories</span>
+      <h3>Add your first book, My Love!</h3>
+    </div>`;
+    return;
+  }
+
+  // Split books into rows; the last item in the final row is the add-tile.
+  const items = [...books];
+  const rows = [];
+  for(let i=0;i<items.length;i+=BOOKS_PER_ROW){
+    rows.push(items.slice(i,i+BOOKS_PER_ROW));
+  }
+  // Put the add-tile in the last row if there's room, otherwise start a new row.
+  if(rows.length && rows[rows.length-1].length < BOOKS_PER_ROW){
+    rows[rows.length-1].push({__addTile:true});
+  } else {
+    rows.push([{__addTile:true}]);
+  }
+
+  rows.forEach(rowBooks => {
+    const row = document.createElement('div');
+    row.className = 'row';
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    rowBooks.forEach(b => {
+      if(b.__addTile){
+        const addTile = document.createElement('div');
+        addTile.className = 'add-tile';
+        addTile.innerHTML = '<span class="material-symbols-outlined" style="font-size:32px;">add</span>';
+        addTile.onclick = openAddForm;
+        grid.appendChild(addTile);
+      } else {
+        grid.appendChild(bookEl(b));
+      }
+    });
+    row.appendChild(grid);
+
+    const board = document.createElement('div');
+    board.className = 'shelf-board';
+    row.appendChild(board);
+
+    container.appendChild(row);
+  });
+}
+
+function bookEl(b){
+  const el = document.createElement('div');
+  el.className = 'book';
+  el.onclick = () => showBookMenu(b.id);
+  el.innerHTML = `
+    <div class="cover">
+      <img src="${b.cover}" alt="${b.title} cover">
+      <div class="stars">${starsMarkup(b.rating,11)}</div>
+    </div>
+    <div class="book-title">${b.title}</div>
+    <div class="book-author">${b.author}</div>
+  `;
+  return el;
+}
+
+function showBookMenu(id){
+  activeBookId = id;
+  const b = books.find(x=>x.id===id);
+  if(!b) return;
+  document.getElementById('modal-cover').src = b.cover;
+  document.getElementById('modal-title').innerText = b.title;
+  document.getElementById('modal-author').innerText = b.author;
+  document.getElementById('book-modal').classList.add('open');
+}
+function closeBookMenu(){
+  document.getElementById('book-modal').classList.remove('open');
+}
+
+function viewBook(){
+  const b = books.find(x=>x.id===activeBookId);
+  closeBookMenu();
+  if(!b) return;
+  document.getElementById('d-cover').src = b.cover;
+  document.getElementById('d-title').innerText = b.title;
+  document.getElementById('d-author').innerText = b.author;
+  document.getElementById('d-genre').innerText = b.genre || 'Uncategorized';
+  document.getElementById('d-stars').innerHTML = starsMarkup(b.rating, 22);
+  const reviewEl = document.getElementById('d-review');
+  if(b.review && b.review.trim()){
+    reviewEl.innerText = b.review; reviewEl.classList.remove('empty');
+  } else {
+    reviewEl.innerText = 'No review written yet.'; reviewEl.classList.add('empty');
+  }
+  document.getElementById('view-library').classList.add('hidden');
+  document.getElementById('view-detail').classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showLibrary(){
+  document.getElementById('view-detail').classList.add('hidden');
+  document.getElementById('view-library').classList.remove('hidden');
+}
+function editFromDetail(){ editingId = activeBookId; openEditForm(); }
+function deleteFromDetail(){ deleteBookById(activeBookId); showLibrary(); }
+
+function deleteBook(){ deleteBookById(activeBookId); closeBookMenu(); }
+function deleteBookById(id){
+  books = books.filter(b=>b.id !== id);
+  saveBooks();
+  renderShelves();
+}
+
+function renderStarPicker(){
+  const wrap = document.getElementById('f-stars');
+  wrap.innerHTML = '';
+  for(let i=1;i<=5;i++){
+    const s = document.createElement('span');
+    s.className = 'material-symbols-outlined star-choice' + (i<=formRating?' fill on':'');
+    s.innerText = 'star';
+    s.onclick = () => { formRating = i; renderStarPicker(); };
+    wrap.appendChild(s);
+  }
+}
+
+function openAddForm(){
+  editingId = null;
+  formRating = 0;
+  document.getElementById('form-heading').innerText = 'Add a Book';
+  document.querySelector('.form-hint').innerText = 'Add your first book to begin your collection.';
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-author').value = '';
+  document.getElementById('f-genre').value = '';
+  document.getElementById('f-review').value = '';
+  document.getElementById('form-cover-preview').innerHTML = '<span class="material-symbols-outlined">image</span>';
+  document.getElementById('form-cover-preview').dataset.src = '';
+  renderStarPicker();
+  document.getElementById('form-modal').classList.add('open');
+}
+
+function openEditForm(){
+  const id = editingId !== null ? editingId : activeBookId;
+  const b = books.find(x=>x.id===id);
+  if(!b) return;
+  editingId = id;
+  closeBookMenu();
+  formRating = b.rating || 0;
+  document.getElementById('form-heading').innerText = 'Edit Book';
+  document.querySelector('.form-hint').innerText = 'Update the details of this book.';
+  document.getElementById('f-title').value = b.title;
+  document.getElementById('f-author').value = b.author;
+  document.getElementById('f-genre').value = b.genre || '';
+  document.getElementById('f-review').value = b.review || '';
+  document.getElementById('form-cover-preview').innerHTML = `<img src="${b.cover}">`;
+  document.getElementById('form-cover-preview').dataset.src = b.cover;
+  renderStarPicker();
+  document.getElementById('form-modal').classList.add('open');
+}
+
+function closeForm(){
+  document.getElementById('form-modal').classList.remove('open');
+}
+
+function handleCoverUpload(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const preview = document.getElementById('form-cover-preview');
+    preview.innerHTML = `<img src="${ev.target.result}">`;
+    preview.dataset.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveForm(){
+  const title = document.getElementById('f-title').value.trim();
+  const author = document.getElementById('f-author').value.trim();
+  if(!title || !author){
+    alert('Please give the book a title and an author.');
+    return;
+  }
+  const genre = document.getElementById('f-genre').value.trim();
+  const review = document.getElementById('f-review').value.trim();
+  const coverSrc = document.getElementById('form-cover-preview').dataset.src ||
+    'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=400&q=80';
+
+  if(editingId !== null){
+    const b = books.find(x=>x.id===editingId);
+    if(b){
+      b.title = title; b.author = author; b.genre = genre; b.review = review;
+      b.rating = formRating; b.cover = coverSrc;
+    }
+  } else {
+    books.push({
+      id: nextId++, title, author, genre, review, rating: formRating, cover: coverSrc
+    });
+  }
+  saveBooks();
+  closeForm();
+  renderShelves();
+  if(!document.getElementById('view-detail').classList.contains('hidden') && editingId){
+    activeBookId = editingId;
+    viewBook();
+  }
+}
+
+function toggleTheme(){
+  const html = document.documentElement;
+  const icon = document.getElementById('theme-icon');
+  const isDark = html.classList.toggle('dark');
+  html.classList.toggle('light', !isDark);
+  // Knob shows the icon for the theme you're ON (moon while dark, sun while light)
+  icon.innerText = isDark ? 'bedtime' : 'wb_sunny';
+  try{ localStorage.setItem('suchis-library-theme', isDark ? 'dark' : 'light'); }catch(e){}
+}
+
+(function initTheme(){
+  try{
+    const saved = localStorage.getItem('suchis-library-theme');
+    const icon = document.getElementById('theme-icon');
+    if(saved === 'dark'){
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+      icon.innerText = 'bedtime';
+    } else {
+      icon.innerText = 'wb_sunny';
+    }
+  }catch(e){}
+})();
+
+renderShelves();
+</script>
+</body>
+</html>
